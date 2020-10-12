@@ -4,7 +4,7 @@
 
 `객체` : 상태(state, property) + 행동(behavior, method)
 
-
+<br>
 
 ## 자동차 객체
 
@@ -14,9 +14,9 @@ Python은 세상의 모든 것을 객체(object)로 바라봅니다.
 
 객체에 변수와 함수들을 추가해서 완성 해 봅시다.
 
+<br>
 
-
-
+<br>
 
 ## 풀어보세요
 
@@ -25,7 +25,7 @@ Python은 세상의 모든 것을 객체(object)로 바라봅니다.
 3.  함수 changeColor를 추가 해 봅시다.
 4.  함수 wheelChange의 내용을 변경 해 봅시다.
 
-
+<br>
 
 기존
 
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     main()
 ```
 
-  
+ <br>
 
 결과
 
