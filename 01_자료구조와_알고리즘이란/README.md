@@ -30,7 +30,6 @@ Python은 세상의 모든 것을 객체(object)로 바라봅니다.
 기존
 
 ```python
-
 class Car:
     def __init__(self):
         self.speed = 0
