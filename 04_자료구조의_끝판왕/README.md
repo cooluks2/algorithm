@@ -205,8 +205,8 @@ if __name__ == "__main__":
 
 **루트와 리프**
 
--   루트(root) : 부모가 없는 노드
--   리프(leaf) : 자식이 없는 노드
+-   `루트(root)` : 부모가 없는 노드
+-   `리프(leaf)` : 자식이 없는 노드
 
 ![image-20201015190159093](README.assets/image-20201015190159093.png)  
 
@@ -214,9 +214,9 @@ if __name__ == "__main__":
 
 **트리의 깊이**
 
--   루트에서 리프까지의 경로의 길이, Depth
+-   루트에서 리프까지의 경로의 길이, `Depth`
 
--   트리의 깊이 =
+-   트리의 깊이 = 2 **leaf까지의 경로의 길이**
 
 ![image-20201015190236714](README.assets/image-20201015190236714.png)  
 
@@ -224,9 +224,9 @@ if __name__ == "__main__":
 
 **트리의 특성**
 
-1.  루트는 하나
-2.  방향성 존재
-3.  순환 구조가 없음
+1.  `루트는 하나`
+2.  `방향성 존재`
+3.  `순환 구조가 없음`
 
 ![image-20201015190400480](README.assets/image-20201015190400480.png)  
 
@@ -234,7 +234,8 @@ if __name__ == "__main__":
 
 **이진 트리**
 
--   모든 노드가 최대 2개의 자식 노드를 가지는 트리
+-   모든 노드가 최대 2개의 자식 노드를 가지는 트리  
+    2개 이하 (0개 가능)
 
 ![image-20201015190615743](README.assets/image-20201015190615743.png)  
 
@@ -244,11 +245,20 @@ if __name__ == "__main__":
 
 ![image-20201015190632124](README.assets/image-20201015190632124.png)  
 
+완전 이진 트리 (Complet Binany Tree)
+
+1.  마지막 레벨 제외 모든 노드가 채워져있는가
+2.  마지막 레벨 노드가 왼쪽부터 채워져있는가
+
+포화 이진 트리 (Full Bibany Tree)
+
+1.  마지막 레벨 제외 모든 노드의 자식 2개
+
 <br>
 
 **이진 탐색 트리**
 
--   Binary Search Tree
+-   Binary Search Tree : `BST`
 
 ![image-20201015190652044](README.assets/image-20201015190652044.png)  
 
@@ -276,12 +286,12 @@ if __name__ == "__main__":
 def BFS(root):
     q = queue.Queue()
     q = put(root)
-        while q.qsize() > 0:
-            node = q.get()
-            if node:
-            	//doSomething
-            q.put(node.left)
-            q.put(node.right)
+    while q.qsize() > 0:
+        node = q.get()
+        if node:
+            //doSomething
+        q.put(node.left)
+        q.put(node.right)
 ```
 
 <br>
@@ -298,7 +308,90 @@ def BFS(root):
 
 <br>
 
+<br>
+
 [실습 3]
+
+## 이진 트리 출력하기
+
+완벽한 이진 트리가 주어졌다고 합시다. 이때, 이 트리를 출력하기 좋은 형태로 반환하는 함수를 구현 해 봅시다.
+위에서부터 순서대로, 트리의 각 층별로 하나의 배열을 만들고, 이 배열들의 배열을 반환하는 형태면 됩니다.
+
+예를 들어서
+
+```
+ 1
+2 3
+```
+
+와 같은 트리가 주어졌을 경우 `[[1],[2,3]]` 을,
+
+```
+   1
+ 2   3
+4 5 6  7
+```
+
+과 같은 트리가 주어졌을 경우에는 `[[1],[2,3],[4,5,6,7]]`을 반환하면 됩니다.
+
+<br>
+
+```python
+import queue
+
+#====이 문제를 풀기 위해 필요한 클래스와 함수들입니다. 따로 수정 할 필요는 없습니다.
+class Node():
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def listToCompleteBinaryTree(lst):
+    def helper(index):
+        if index >= len(lst):
+            return None
+        node = Node(lst[index])
+        node.left = helper(index * 2 + 1)
+        node.right = helper(index * 2 + 2)
+        return node
+    return helper(0)
+#=================================================================================
+def printTree(node):
+    all_lines = []
+    line = []
+    
+    q = queue.Queue()
+    q.put(node)
+    q.put(Node(-1)) # -1을 통해서 각 깊이를 구별하기 위해서
+    
+    while q.qsize() > 0:
+        node = q.get()
+        
+        if not node:
+            continue
+        
+        else:
+            if node.val == -1: # -1을 만나면 새 리스트
+                if q.qsize() > 0:
+                    all_lines.append(line)
+                    line = []
+                    q.put(Node(-1))
+                    
+            else:
+                line.append(node.val)
+                q.put(node.left)
+                q.put(node.right)
+                
+    return all_lines
+
+def main():
+    node = listToCompleteBinaryTree([1,2,3,4,5,6,7])
+    print(printTree(node)) # [[1], [2, 3], [4, 5, 6, 7]]
+
+if __name__ == "__main__":
+    main()
+    
+```
 
 <br>
 
@@ -326,18 +419,100 @@ def DFS(node):
 
 ![image-20201015191116790](README.assets/image-20201015191116790.png)  
 
-<br>[실습 4]
-
 <br>
 
 <br>
 
-<br>
+[실습 4]
+
+## 트리의 경로의 합
+
+완벽한 이진 트리가 주어졌다고 합시다. 그리고 어떤 합 숫자가 주어졌다고 합시다. 이때, 이 트리의 루트(root)에서부터 잎(leaf)까지의 가능한 경로들을 고려해서, 이 경로들 중 최소 하나 이상의 해당 경로상의 value들의 합산과 주어진 합 숫자가 일치하면 True를, 아니면 Fals를 반환하는 함수를 구현 해 봅시다.
+
+예를 들어서,
+
+```
+ 1
+2 3
+```
+
+와 같은 트리가 주어지고 3 값이 주어진다면 1->2 경로의 합이 3이기 때문에 True를 반환하면 됩니다.
+
+```
+   1
+ 2   3
+4 5 6  7
+```
+
+과 같은 트리가 주어지고 8이 주어진다면 1->2->5 경로의 합이 8이기 때문에 True를 반환하면 됩니다. 하지만 만약 15가 주어진다면 해당 트리의 어떤 경로도 합산이 15가 되지 않기 때문에 False를 반환하면 됩니다.
+
+-   깊이 우선 탐색을 활용 해 봅시다.
 
 <br>
 
-<br>
+```python
 
-<br>
+#====이 문제를 풀기 위해 필요한 클래스와 함수들입니다. 따로 수정 할 필요는 없습니다.
+class Node():
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def listToCompleteBinaryTree(lst):
+    def helper(index):
+        if index >= len(lst):
+            return None
+        node = Node(lst[index])
+        node.left = helper(index * 2 + 1)
+        node.right = helper(index * 2 + 2)
+        return node
+    return helper(0)
+
+def printTree(node):
+    q = [Node(-1), node]
+
+    line = []
+    while q:
+        node = q.pop()
+        if not node:
+            continue
+        elif node.val == -1:
+            if len(line) > 0:
+                print(" ".join(line))
+                line = []
+                q.insert(0,Node(-1))
+        else:
+            q.insert(0,node.left)
+            q.insert(0,node.right)
+            line.append(str(node.val))
+#=================================================================================
+def path_sum(node, targetSum):
+    def dfsHelper(node, curSum):
+        # 여기에 깊이 우선 탐색을 구현 해 봅시다.
+        if node is None: # 리프노드일 때 합계가 목표와 같은지 체크
+            if curSum == targetSum:
+                return True
+            else:
+                return False
+        
+        else:
+            curSum += node.val
+            is_left = dfsHelper(node.left, curSum)
+            is_right = dfsHelper(node.right, curSum)
+        return is_left or is_right
+    dfsHelper(node, 0)
+    
+    return dfsHelper(node, 0)
+    
+def main():
+    node = listToCompleteBinaryTree([1,2,3,4,5,6,7])
+    printTree(node)
+    print(path_sum(node, 8)) # return True
+    print(path_sum(node, 15)) # return False
+
+if __name__ == "__main__":
+    main()
+```
 
 <br>
